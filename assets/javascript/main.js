@@ -1,14 +1,15 @@
 //Setup Variables
 //==================================
-var feelings = ["sad", "happy", "hurt", "helped", "insecure", "confident", "tired", "energized"];
+var feelings = ["sad", "happy", "surprise", "disgust", "fear", "anger", "tired", "energized"];
 var allFeelings = [];
 var authKey = "jVuZK9CxhiLm1SiZmlMtg6djlkDeX9C3";
 var queryTerm = '';
 var numResults = 0;
 var GIFData = {};
-var extraInspiration = 0;
+var currentEmotion = "";
+var extraInspiration = 1;
 //URL Base
-var queryURLBase = 'https://api.giphy.com/v1/gifs/search?api_key=' + authKey;
+var queryURLBase = 'https://api.giphy.com/v1/gifs/search?api_key=' + authKey + '&limit=100';
 
 //Functions
 //==================================
@@ -27,12 +28,10 @@ function runQuery(queryURL) {
 
             //Add options to add more gifs or get new ideas
             $('.options').empty();
-            var moreInspiration = $('<button class="more-inspiration">I Need More Inspiration</button>');
+            var moreInspiration = $('<button class="option more-inspiration">I Need More Inspiration</button>');
             $('.options').append(moreInspiration);
-            var similarEmotion = $('<button class="do-more">Similar Emotions</button>');
-            $('.options').append(similarEmotion);
 
-
+            $('#current-emotion').html(`You are looking at inspiration for the word, "${currentEmotion}."`);
 
             $('#emotions').empty();
             for (let i = 0; i < 10; i++) {
@@ -62,26 +61,33 @@ function moreQuery(queryURL) {
     //Ajax
     $.ajax({ url: queryURL, method: "GET" })
         .done(function (GIFData) {
-            i = extraInspiration +10;
+            if (extraInspiration === 10) {
+                alert('That is enough inspiration. Maybe you should read a book or something.:/')
+            } else {
 
-            for (let i = 0; i < 10; i++) {
-                let GIFStill = GIFData.data[i].images.fixed_height_small_still.url;
-                console.log(GIFStill);
-                console.log(GIFData);
-                //Start dumping to html
-                var emotionDiv = $('<div class="gifCards text-center">')
-                var rating = $('<h5>GIF rating: ' + GIFData.data[i].rating.toUpperCase() + '</h5>');
-                //GIFData.data[i].rating;
-                var img = $('<img>');
-                img.attr('src', GIFStill);
-                img.addClass('card emotion-card');
-                img.attr('id', 'articleCard-' + i);
-                img.attr('data-still', GIFStill);
-                img.attr('data-animate', GIFData.data[i].images.fixed_height_small.url);
-                img.attr('data-state', 'still')
-                emotionDiv.append(rating);
-                emotionDiv.append(img);
-                $('#emotions').append(emotionDiv);
+                for (let i = 0; i < 10; i++) {
+                    console.log(GIFData);
+                    var newI = i + (10 * extraInspiration);
+
+                    let GIFStill = GIFData.data[newI].images.fixed_height_small_still.url;
+
+                    console.log(newI);
+                    //Start dumping to html
+                    var emotionDiv = $('<div class="gifCards text-center">')
+                    var rating = $('<h5>GIF rating: ' + GIFData.data[newI].rating.toUpperCase() + '</h5>');
+                    //GIFData.data[i].rating;
+                    var img = $('<img>');
+                    img.attr('src', GIFStill);
+                    img.addClass('card emotion-card');
+                    img.attr('id', 'articleCard-' + newI);
+                    img.attr('data-still', GIFStill);
+                    img.attr('data-animate', GIFData.data[newI].images.fixed_height_small.url);
+                    img.attr('data-state', 'still')
+                    emotionDiv.append(rating);
+                    emotionDiv.append(img);
+                    $('#emotions').append(emotionDiv);
+                };
+                extraInspiration++;
             }
         })
 }
@@ -92,17 +98,18 @@ function moreQuery(queryURL) {
 $('.emotionBtnsList').on('click', 'button#emotionBtn', function () {
     //set term from the text of button clicked
     queryTerm = $(this).text().trim();
+    currentEmotion = queryTerm;
     //Add in the queryTerm
     var newUrl = queryURLBase + "&q=" + queryTerm;
     runQuery(newUrl);
 });
 
-$('.options').on('click', 'button#emotionBtn', function () {
+$('.options').on('click', 'button.more-inspiration', function () {
     //set term from the text of button clicked
-    queryTerm = $(this).text().trim();
     //Add in the queryTerm
     var newUrl = queryURLBase + "&q=" + queryTerm;
-    runQuery(newUrl);
+    moreQuery(newUrl);
+    console.log('hmm');
 });
 
 //Animate GIF with click of GIF

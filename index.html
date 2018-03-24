@@ -2,46 +2,48 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title>Improv Aid | Emotions</title>
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/main.css">
+  <meta charset="utf-8" />
+  <title>Improv Aid | Emotions</title>
+  <link rel="stylesheet" href="assets/css/reset.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
 <body>
 
-    <div class="jumbotron text-center">
-        <h1 class="improvAid">Improv Aid</h1>
-        <h3 class="instrucions">Having a tough time evoking the right emotions?
-            <br> Click on any of the emotions below for some inspiration.
-            <br>Then click on a picture to bring it to life. Feel free to add your own emotion :)</h3>
-        <div class="emotionBtnsList"></div>
-        <div class="options"> </div>
+  <div class="jumbotron text-center">
+    <h1 class="improvAid">Improv Aid</h1>
+    <h3 class="instrucions">Having a tough time evoking the right emotions?
+      <br> Click on any of the emotions below for some inspiration.
+      <br>Then click on a picture to bring it to life. Feel free to add your own emotion :)</h3>
+    <div class="emotionBtnsList"></div>
+    <div class="options"> </div>
+    <br>
+    <h4 id="current-emotion"></h4>
+  </div>
+
+  <div class="container">
+    <div class="row">
+
+      <div id="emotions" class="col-md-8 col-sm-12">
+      </div>
+
+
+      <form id="emotions-form" class="col-4">
+        <label for="emotions-input">Add an emotion</label>
+        <input type="text" id="emotion-input">
+        <br>
+
+        <input type="submit" id="addEmotion" value="Submit">
+      </form>
     </div>
-
-    <div class="container">
-        <div class="row">
-
-            <div id="emotions" class="col-md-8 col-sm-12">
-            </div>
-
-
-            <form id="emotions-form" class="col-4">
-                <label for="emotions-input">Add an emotion</label>
-                <input type="text" id="emotion-input">
-                <br>
-
-                <input type="submit" id="addEmotion" value="Submit">
-            </form>
-        </div>
-    </div>
+  </div>
 
 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-    <script src="assets/javascript/main.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="assets/javascript/main.js"></script>
 </body>
 
 </html>
