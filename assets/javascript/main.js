@@ -1,20 +1,14 @@
 //Setup Variables
 //==================================
 var feelings = ["sad", "happy", "hurt", "helped", "insecure", "confident", "tired", "energized"];
-
 var allFeelings = [];
-
 var authKey = "jVuZK9CxhiLm1SiZmlMtg6djlkDeX9C3";
-
 var queryTerm = '';
-
 var numResults = 0;
-
 var GIFData = {};
-
+var extraInspiration = 0;
 //URL Base
 var queryURLBase = 'https://api.giphy.com/v1/gifs/search?api_key=' + authKey;
-
 
 //Functions
 //==================================
@@ -26,11 +20,50 @@ function newBtn(emotion) {
     $('.emotionBtnsList').append(newBtn);
 }
 
-function runQuery(numArticles, queryURL) {
+function runQuery(queryURL) {
     //Ajax
     $.ajax({ url: queryURL, method: "GET" })
         .done(function (GIFData) {
+
+            //Add options to add more gifs or get new ideas
+            $('.options').empty();
+            var moreInspiration = $('<button class="more-inspiration">I Need More Inspiration</button>');
+            $('.options').append(moreInspiration);
+            var similarEmotion = $('<button class="do-more">Similar Emotions</button>');
+            $('.options').append(similarEmotion);
+
+
+
             $('#emotions').empty();
+            for (let i = 0; i < 10; i++) {
+                let GIFStill = GIFData.data[i].images.fixed_height_small_still.url;
+                console.log(GIFStill);
+                console.log(GIFData);
+                //Start dumping to html
+                var emotionDiv = $('<div class="gifCards text-center">')
+                var rating = $('<h5>GIF rating: ' + GIFData.data[i].rating.toUpperCase() + '</h5>');
+                //GIFData.data[i].rating;
+                var img = $('<img>');
+                img.attr('src', GIFStill);
+                img.addClass('card emotion-card');
+                img.attr('id', 'articleCard-' + i);
+                img.attr('data-still', GIFStill);
+                img.attr('data-animate', GIFData.data[i].images.fixed_height_small.url);
+                img.attr('data-state', 'still')
+                emotionDiv.append(rating);
+                emotionDiv.append(img);
+                $('#emotions').append(emotionDiv);
+            }
+        })
+}
+
+
+function moreQuery(queryURL) {
+    //Ajax
+    $.ajax({ url: queryURL, method: "GET" })
+        .done(function (GIFData) {
+            i = extraInspiration +10;
+
             for (let i = 0; i < 10; i++) {
                 let GIFStill = GIFData.data[i].images.fixed_height_small_still.url;
                 console.log(GIFStill);
@@ -61,7 +94,15 @@ $('.emotionBtnsList').on('click', 'button#emotionBtn', function () {
     queryTerm = $(this).text().trim();
     //Add in the queryTerm
     var newUrl = queryURLBase + "&q=" + queryTerm;
-    runQuery(10, newUrl);
+    runQuery(newUrl);
+});
+
+$('.options').on('click', 'button#emotionBtn', function () {
+    //set term from the text of button clicked
+    queryTerm = $(this).text().trim();
+    //Add in the queryTerm
+    var newUrl = queryURLBase + "&q=" + queryTerm;
+    runQuery(newUrl);
 });
 
 //Animate GIF with click of GIF
