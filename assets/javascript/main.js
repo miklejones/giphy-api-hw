@@ -16,79 +16,67 @@ var GIFData = {};
 var queryURLBase = 'https://api.giphy.com/v1/gifs/search?api_key=' + authKey;
 
 
-
-
-
-
-
-
-
-
 //Functions
 //==================================
-
 //Function to add feeling as a button
 function newBtn(emotion) {
     allFeelings.push(emotion);
     //jQuery to create button from the given emotion
     var newBtn = "<button id='emotionBtn'>" + emotion + "</button>";
     $('.emotionBtnsList').append(newBtn);
-
 }
 
 function runQuery(numArticles, queryURL) {
     //Ajax
     $.ajax({ url: queryURL, method: "GET" })
         .done(function (GIFData) {
-
+            $('#emotions').empty();
             for (let i = 0; i < 10; i++) {
-                let GIFurl = GIFData.data[i].embed_url;
-                console.log(GIFurl);
-
+                let GIFStill = GIFData.data[i].images.fixed_height_small_still.url;
+                console.log(GIFStill);
+                console.log(GIFData);
                 //Start dumping to html
-                var cardSection = $('<div>');
-                cardSection.addClass('card');
-                cardSection.attr('id', 'articleCard-' + i);
-                $('#emotions').append(cardSection);
-
-                // Attach the content to the appropriate card
-                $('#articleCard-' + i).append(GIFurl);
+                var emotionDiv = $('<div class="gifCards text-center">')
+                var rating = $('<h5>GIF rating: ' + GIFData.data[i].rating.toUpperCase() + '</h5>');
+                //GIFData.data[i].rating;
+                var img = $('<img>');
+                img.attr('src', GIFStill);
+                img.addClass('card emotion-card');
+                img.attr('id', 'articleCard-' + i);
+                img.attr('data-still', GIFStill);
+                img.attr('data-animate', GIFData.data[i].images.fixed_height_small.url);
+                img.attr('data-state', 'still')
+                emotionDiv.append(rating);
+                emotionDiv.append(img);
+                $('#emotions').append(emotionDiv);
             }
-
-
-            // console.log(GIFData);
-            // console.log(GIFData.data[0].embed_url);
         })
-
 }
-
-
-
-
-
-
-
-
 
 //Main Process
 //==================================
-
-
-
 //Add GIFs with button click
 $('.emotionBtnsList').on('click', 'button#emotionBtn', function () {
-
     //set term from the text of button clicked
     queryTerm = $(this).text().trim();
-
     //Add in the queryTerm
     var newUrl = queryURLBase + "&q=" + queryTerm;
     runQuery(10, newUrl);
-
 });
 
-
-
+//Animate GIF with click of GIF
+$('#emotions').on('click', 'div.gifCards img', function () {
+    console.log(this);
+    var state = $(this).attr('data-state')
+    console.log(state);
+    if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    }
+});
 
 //Add button for emotion added
 $('#addEmotion').on('click', function () {
@@ -103,16 +91,11 @@ $('#addEmotion').on('click', function () {
     };
 });
 
-
-
+//Load buttons on page load
 $(document).ready(function () {
-
-
     //Loop to add feelings to DOM
     for (let f = 0; f < feelings.length; f++) {
         let emotion = feelings[f];
         newBtn(emotion);
     };
-
-
 });

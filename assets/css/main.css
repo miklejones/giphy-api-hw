@@ -1,3 +1,28 @@
+h1.improvAid {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h5 {
+    border-bottom: 3px solid black;
+    padding-left: 2px;
+    padding-bottom: 4px;
+}
+
 #emotionBtn {
     margin: 2px 4px;
+}
+
+#emotionBtn:hover {
+    cursor: pointer;
+}
+
+.emotion-card:hover {
+    cursor: pointer;
+}
+
+.gifCards {
+    float: left;
+    margin: 3px 5px;
+    border: 3px solid black;
+    align-content: center;
 }

@@ -15,24 +15,30 @@
     <div class="jumbotron text-center">
         <h1 class="improvAid">Improv Aid</h1>
         <h3 class="instrucions">Having a tough time evoking the right emotions?
-            <br> Click on any of the emotions below for some inspiration! Feel free to add your own emotion :)</h3>
+            <br> Click on any of the emotions below for some inspiration.
+            <br>Then click on a picture to bring it to life. Feel free to add your own emotion :)</h3>
         <div class="emotionBtnsList"></div>
+        <div class="options">
+            <button>More Inspiration</button>
+            <button>Similar Emotions</button>
+        </div>
     </div>
 
-    <div class="row">
+    <div class="container">
+        <div class="row">
 
-        <div id="emotions" class="col-8">
+            <div id="emotions" class="col-md-8 col-sm-12">
+            </div>
+
+
+            <form id="emotions-form" class="col-4">
+                <label for="emotions-input">Add an emotion</label>
+                <input type="text" id="emotion-input">
+                <br>
+
+                <input type="submit" id="addEmotion" value="Submit">
+            </form>
         </div>
-
-
-        <form id="emotions-form" class="col-4">
-            <label for="emotions-input">Add an emotion</label>
-            <input type="text" id="emotion-input">
-            <br>
-
-            <input type="submit" id="addEmotion" value="Submit">
-        </form>
-
     </div>
 
 
